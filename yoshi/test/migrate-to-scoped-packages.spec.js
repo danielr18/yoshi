@@ -138,7 +138,7 @@ describe('Migrate to scoped packages task', () => {
       const updatedPkg = readPackage(test);
       expect(updatedPkg.publishConfig).to.deep.equal({
         registry: 'repo.dev.wix',
-        '@wix:registry': 'repo.dev.wix'
+        '@wix:registry': 'http://repo.dev.wixpress.com/artifactory/api/npm/npm-local/'
       });
     });
   });
