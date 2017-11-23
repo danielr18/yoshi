@@ -65,6 +65,9 @@ function updatePackageName(payload) {
   if (update) {
     changes[pkg.name] = `@wix/${pkg.name}`;
     pkg.name = changes[pkg.name];
+    pkg.publishConfig['@wix:registry'] = (
+      pkg.publishConfig['@wix:registry'] || 'http://repo.dev.wixpress.com/artifactory/api/npm/npm-local/'
+    );
   }
   return payload;
 }

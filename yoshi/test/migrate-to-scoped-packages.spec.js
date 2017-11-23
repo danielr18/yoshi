@@ -123,6 +123,26 @@ describe('Migrate to scoped packages task', () => {
     });
   });
 
+  it('should update the publishConfig section', () => {
+    const pkg = JSON.parse(fx.packageJson());
+    pkg.publishConfig = {registry: 'repo.dev.wix'};
+    pkg.dependencies = {};
+
+    npm.app.set('exists', true);
+    npm.app.set('packages', []);
+
+    child = setup(test, JSON.stringify(pkg))
+      .spawn('start', [], merge({}, migrateToScopedPackages, outsideTeamCity));
+
+    return waitUntilStarted(test).then(() => {
+      const updatedPkg = readPackage(test);
+      expect(updatedPkg.publishConfig).to.deep.equal({
+        registry: 'repo.dev.wix',
+        '@wix:registry': 'repo.dev.wix'
+      });
+    });
+  });
+
   it('should update scoped dependencies', () => {
 
     const outdatedDeps = {
