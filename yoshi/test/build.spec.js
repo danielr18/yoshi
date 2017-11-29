@@ -1255,6 +1255,37 @@ describe('Aggregator: Build', () => {
     });
   });
 
+  describe('Migrate Bower Artifactory', () => {
+    it('should migrate .bowerrc', () => {
+      const bowerrc = {
+        registry: {
+          search: ['https://bower.herokuapp.com', 'http://wix:wix@mirror.wixpress.com:3333'],
+          register: 'http://wix:wix@mirror.wixpress.com:3333',
+          publish: 'http://wix:wix@mirror.wixpress.com:3333'
+        }
+      };
+
+      test
+        .setup({
+          'package.json': fx.packageJson(),
+          '.bowerrc': JSON.stringify(bowerrc, null, 2),
+        })
+        .execute('build', [], {MIGRATE_BOWER_ARTIFACTORY_TOOL: true});
+
+      const newBowerrc = JSON.parse(test.content('.bowerrc'));
+      const newPj = JSON.parse(test.content('package.json'));
+
+      expect(newBowerrc).to.eql({
+        registry: 'https://bower.dev.wixpress.com',
+        resolvers: [
+          'bower-art-resolver'
+        ]
+      });
+
+      expect(newPj.devDependencies['bower-art-resolver']).to.exist;
+    });
+  });
+
   function checkServerIsServing({backoff = 100, max = 100, port = fx.defaultServerPort(), file = ''} = {}) {
     return retryPromise({backoff, max}, () => fetch(`http://localhost:${port}/${file}`)
       .then(res => res.text()));
