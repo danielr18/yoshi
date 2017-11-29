@@ -460,7 +460,7 @@ describe('Aggregator: Start', () => {
           }
         };
 
-        test
+        child = test
           .setup({
             'package.json': fx.packageJson(),
             '.bowerrc': JSON.stringify(bowerrc, null, 2),
@@ -484,7 +484,6 @@ describe('Aggregator: Start', () => {
             return Promise.reject(e);
           }
         });
-
       });
     });
   });
