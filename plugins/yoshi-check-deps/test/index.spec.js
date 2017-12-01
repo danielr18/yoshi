@@ -28,13 +28,13 @@ describe('yoshi-deps', () => {
   it('should show a warning when yoshi & wix-style-react is at least 1 patch version behind', () => {
     // TODO: use more complex version, like installed - 1.5.2, latest - 1.6.0
     setupProject();
-    mockMeta('yoshi', ['1.0.0', '1.0.1']);
     mockMeta('wix-style-react', ['1.0.0', '1.0.2']);
+    mockMeta('yoshi', ['1.0.0', '1.0.1']);
 
     const message = [
       'WARNING: some dependencies are a bit behind:',
-      'yoshi@1.0.0 should be @1.0.1',
-      'wix-style-react@1.0.0 should be @1.0.2'
+      'wix-style-react@1.0.0 should be @1.0.2',
+      'yoshi@1.0.0 should be @1.0.1'
     ].join('\n');
 
     return task().then(warning =>
@@ -43,13 +43,13 @@ describe('yoshi-deps', () => {
 
   it('should show a warning when yoshi & wix-style-react is at least 1 version behind', () => {
     setupProject();
-    mockMeta('yoshi', ['1.0.0', '2.0.0']);
     mockMeta('wix-style-react', ['1.0.0', '1.1.0']);
+    mockMeta('yoshi', ['1.0.0', '2.0.0']);
 
     const message = [
       'WARNING: some dependencies are a bit behind:',
-      'yoshi@1.0.0 should be @2.0.0',
-      'wix-style-react@1.0.0 should be @1.1.0'
+      'wix-style-react@1.0.0 should be @1.1.0',
+      'yoshi@1.0.0 should be @2.0.0'
     ].join('\n');
 
     return task().then(warning =>
@@ -69,13 +69,13 @@ describe('yoshi-deps', () => {
       expect(stripAnsi(error)).to.equal(message));
   });
 
-  it.skip('should throw an error when wix-style-react is 5 minor versions behind', () => {
+  it('should throw an error when wix-style-react is 2 major versions behind', () => {
     setupProject();
-    mockMeta('wix-style-react', ['1.0.0', '1.1.0', '2.0.0', '2.1.0', '2.3.0', '2.5.0']);
+    mockMeta('wix-style-react', ['1.0.0', '1.1.0', '2.0.0', '2.1.0', '3.0.0']);
 
     const message = [
       'ERROR: the following dependencies must be updated:',
-      'wix-style-react@1.0.0 must be at least @1.1.0'
+      'wix-style-react@1.0.0 must be at least @2.0.0'
     ].join('\n');
 
     return invertPromise(task())
@@ -84,8 +84,8 @@ describe('yoshi-deps', () => {
 
   it('should show nothing if yoshi & wix-style-react is up to date', () => {
     setupProject();
-    mockMeta('yoshi', '1.0.0');
     mockMeta('wix-style-react', '1.0.0');
+    mockMeta('yoshi', '1.0.0');
 
     return task().then(message =>
       expect(message).to.be.undefined);
@@ -94,7 +94,7 @@ describe('yoshi-deps', () => {
   function setupProject() {
     return test.setup({
       '.npmrc': `registry=http://localhost:${port}/`,
-      'package.json': '{"devDependencies": {"yoshi": "1.0.0"}, "dependencies": {"wix-style-react": "1.0.0"}}',
+      'package.json': '{"dependencies": {"wix-style-react": "1.0.0"}, "devDependencies": {"yoshi": "1.0.0"}}',
       'node_modules/yoshi/package.json': '{"name": "yoshi", "version": "1.0.0"}',
       'node_modules/wix-style-react/package.json': '{"name": "wix-style-react", "version": "1.0.0"}'
     });

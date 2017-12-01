@@ -5,7 +5,7 @@ const depkeeper = require('depkeeper');
 
 function checkDeps() {
   return depkeeper()
-    .rule('yoshi', {major: 1})
+    .rule('{yoshi,wix-style-react}', {major: 1})
     .rule('{yoshi,wix-style-react}')
     .checkRules()
     .then(([outdated1, outdated2]) => {
