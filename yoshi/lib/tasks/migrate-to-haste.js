@@ -17,7 +17,7 @@ module.exports = () => () => {
   console.log('║                                                                        ║');
   console.log('║ ' + chalk.cyan('🏄🏻  Your project has been auto migrated to use Haste instead of Yoshi') + '   ║');
   console.log('║ ' + chalk.cyan('🏝  You can read about the migration script heuristics here') + '             ║');
-  console.log('║ ' + chalk.cyan('🔗  https://github.com/wix-private/yoshi-to-haste') + '                       ║');
+  console.log('║ ' + chalk.cyan('🔗  https://www.npmjs.com/package/yoshi-to-haste') + '                        ║');
   console.log('║                                                                        ║');
   console.log('║ Please remove your ' + chalk.bold.magenta('node_modules ') + 'and run ' + chalk.bold.magenta('npm install') + '                    ║');
   console.log('║                                                                        ║');
