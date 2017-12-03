@@ -25,13 +25,15 @@ module.exports = options => ({
   build: [
     ['yoshi-clean', 'yoshi-update-node-version', './tasks/migrate-to-scoped-packages', './tasks/migrate-bower-artifactory', 'yoshi-check-deps'],
     ['yoshi-sass', './tasks/less', 'yoshi-petri', 'yoshi-maven-statics', 'yoshi-copy', transpiler(), './tasks/bundle'],
-    ['yoshi-fedops-build-report']
+    ['yoshi-fedops-build-report'],
+    ['./tasks/migrate-to-haste'],
   ],
   lint: [[linter, 'yoshi-stylelint']],
   release: [['yoshi-wnpm-release']],
   start: [
     ['yoshi-clean', 'yoshi-update-node-version', './tasks/migrate-to-scoped-packages', './tasks/migrate-bower-artifactory', 'yoshi-check-deps'],
-    ['yoshi-sass', './tasks/less', 'yoshi-petri', 'yoshi-maven-statics', 'yoshi-copy', transpiler(), './tasks/webpack-dev-server']
+    ['yoshi-sass', './tasks/less', 'yoshi-petri', 'yoshi-maven-statics', 'yoshi-copy', transpiler(), './tasks/webpack-dev-server'],
+    ['./tasks/migrate-to-haste']
   ],
   test: tests(options)
 });

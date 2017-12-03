@@ -486,6 +486,41 @@ describe('Aggregator: Start', () => {
         });
       });
     });
+
+    describe('Migrate to Haste', () => {
+      it('should migrate to haste', () => {
+        test.setup({
+          'package.json': fx.packageJson(),
+        }).spawn('start', []);
+
+        return retryPromise({backoff: 100}, () => {
+          try {
+            const newPackageJson = JSON.parse(test.content('package.json'));
+            expect(newPackageJson.haste.preset).to.eql('yoshi');
+            return Promise.resolve();
+          } catch (error) {
+            return Promise.reject();
+          }
+        });
+      });
+
+      it('should not migrate to haste if the MIGRATE_TO_HASTE environment variable is false', () => {
+        test.setup({
+          'package.json': fx.packageJson(),
+        }).spawn('start', [], {MIGRATE_TO_HASTE: 'false'});
+
+        return retryPromise({backoff: 100}, () => {
+          try {
+            const newPackageJson = JSON.parse(test.content('package.json'));
+            expect(newPackageJson.haste).to.be.undefined;
+            return Promise.resolve();
+          } catch (error) {
+            return Promise.reject();
+          }
+        });
+      });
+    });
+
   });
 
   function checkServerLogCreated({backoff = 100} = {}) {
