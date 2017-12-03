@@ -11,6 +11,12 @@ const {inTeamCity} = require('../utils');
 const files = projectConfig.specs.node() || globs.specs();
 require('../require-hooks'); // TODO: remove once jasmine is spawned in a child process
 
+const clearRequireCache = () => {
+  Object.keys(require.cache)
+    .filter(key => !key.includes('node_modules'))
+    .forEach(key => delete require.cache[key]);
+};
+
 function runJasmine() {
   return new Promise((resolve, reject) => {
     process.env.NODE_ENV = 'test';
@@ -33,29 +39,10 @@ function runJasmine() {
         path.join(__dirname, '..', '..', 'config', 'test-setup.js')
       ]
     });
-    clearCaches(jasm.helperFiles);
-    clearCaches(jasm.specFiles);
+
+    clearRequireCache();
     jasm.execute();
   });
-}
-
-function clearCaches(files) {
-  if (files) {
-    files.forEach(file => deleteRequireCache(require.resolve(path.resolve(file))));
-  }
-}
-
-function deleteRequireCache(id) {
-  if (!id || id.includes('node_modules')) {
-    return;
-  }
-
-  const files = require.cache[id];
-
-  if (files !== undefined) {
-    Object.keys(files.children).forEach(file => deleteRequireCache(files.children[file].id));
-    delete require.cache[id];
-  }
 }
 
 module.exports = ({log, watch}) => {
