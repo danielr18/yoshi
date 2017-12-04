@@ -142,7 +142,7 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('packages', ['@wix/at-wix']);
 
     child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, migrateToScopedPackages, outsideTeamCity));
+      .spawn('start', [], merge({}, migrateToScopedPackages, outsideTeamCity, {MIGRATE_TO_HASTE: 'false'}));
 
     return waitUntilStarted(test).then(() => {
       const updatedPkg = readPackage(test);
