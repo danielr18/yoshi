@@ -14,7 +14,7 @@ describe('Aggregator: Test', () => {
   afterEach(() => test.teardown());
 
   describe('defaults', () => {
-    it.skip('should pass with exit code 0 with mocha as default', function () {
+    it('should pass with exit code 0 with mocha as default', function () {
       this.timeout(40000);
       const res = test
         .setup({
@@ -54,7 +54,7 @@ describe('Aggregator: Test', () => {
   });
 
   describe('--protractor', () => {
-    it.skip(`should run protractor with express that serves static files from client dep
+    it(`should run protractor with express that serves static files from client dep
         if protractor.conf is present, according to dist/test/**/*.e2e.js glob`, () => {
       const res = test
         .setup({
@@ -78,7 +78,7 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('1 spec, 0 failures');
     });
 
-    it.skip(`should use protractor-browser-logs and fail if there are any console errors on the browser`, () => {
+    it(`should use protractor-browser-logs and fail if there are any console errors on the browser`, () => {
       const res = test
         .setup({
           'protractor.conf.js': fx.protractorConf({cdnPort: 3200}),
@@ -98,7 +98,7 @@ describe('Aggregator: Test', () => {
       expect(res.stdout).to.contain('1 spec, 1 failure');
     });
 
-    it.skip(`should not use protractor-browser-logs when FT is off`, () => {
+    it(`should not use protractor-browser-logs when FT is off`, () => {
       const res = test
         .setup({
           'protractor.conf.js': fx.protractorConf({cdnPort: 3200}),

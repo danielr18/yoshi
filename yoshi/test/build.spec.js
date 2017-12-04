@@ -1290,7 +1290,7 @@ describe('Aggregator: Build', () => {
     it('should migrate to haste', () => {
       test.setup({
         'package.json': fx.packageJson(),
-      }).execute('build', []);
+      }).execute('build', [], outsideTeamCity);
 
       const newPackageJson = JSON.parse(test.content('package.json'));
       expect(newPackageJson.haste.preset).to.eql('yoshi');
@@ -1299,7 +1299,7 @@ describe('Aggregator: Build', () => {
     it('should not migrate to haste if the MIGRATE_TO_HASTE environment variable is false', () => {
       test.setup({
         'package.json': fx.packageJson(),
-      }).execute('build', [], {MIGRATE_TO_HASTE: 'false'});
+      }).execute('build', [], Object.assign({MIGRATE_TO_HASTE: 'false'}, outsideTeamCity));
 
       const newPackageJson = JSON.parse(test.content('package.json'));
       expect(newPackageJson.haste).to.be.undefined;
