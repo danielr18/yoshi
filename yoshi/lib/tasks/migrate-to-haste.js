@@ -1,4 +1,3 @@
-const yoshiToHaste = require('yoshi-to-haste');
 const chalk = require('chalk');
 const {inTeamCity} = require('../utils');
 
@@ -11,6 +10,7 @@ module.exports = () => () => {
     return;
   }
 
+  const yoshiToHaste = require('yoshi-to-haste');
   const results = yoshiToHaste();
 
   if (results.length === 0) {
