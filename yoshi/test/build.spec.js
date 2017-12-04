@@ -1286,6 +1286,26 @@ describe('Aggregator: Build', () => {
     });
   });
 
+  describe('Migrate to Haste', () => {
+    it('should migrate to haste', () => {
+      test.setup({
+        'package.json': fx.packageJson(),
+      }).execute('build', []);
+
+      const newPackageJson = JSON.parse(test.content('package.json'));
+      expect(newPackageJson.haste.preset).to.eql('yoshi');
+    });
+
+    it('should not migrate to haste if the MIGRATE_TO_HASTE environment variable is false', () => {
+      test.setup({
+        'package.json': fx.packageJson(),
+      }).execute('build', [], {MIGRATE_TO_HASTE: 'false'});
+
+      const newPackageJson = JSON.parse(test.content('package.json'));
+      expect(newPackageJson.haste).to.be.undefined;
+    });
+  });
+
   function checkServerIsServing({backoff = 100, max = 100, port = fx.defaultServerPort(), file = ''} = {}) {
     return retryPromise({backoff, max}, () => fetch(`http://localhost:${port}/${file}`)
       .then(res => res.text()));

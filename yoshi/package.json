@@ -103,6 +103,7 @@
     "yoshi-runtime": "~1.0.0",
     "yoshi-sass": "latest",
     "yoshi-stylelint": "latest",
+    "yoshi-to-haste": "~1.1.1",
     "yoshi-tslint": "latest",
     "yoshi-typescript": "latest",
     "yoshi-update-node-version": "latest",

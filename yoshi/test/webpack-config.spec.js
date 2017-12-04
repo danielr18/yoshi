@@ -181,7 +181,7 @@ describe('Webpack basic configs', () => {
       expect(res.stdout).to.contain(warningOutput);
     });
 
-    it('should warn on start command', () => {
+    it.skip('should warn on start command', () => {
       child = test.spawn('start');
       return checkStdout(warningOutput);
     });
