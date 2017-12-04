@@ -1291,7 +1291,7 @@ describe('Aggregator: Build', () => {
       test.setup({
         'package.json': fx.packageJson(),
       }).execute('build', [], outsideTeamCity);
-      
+
       const newPackageJson = JSON.parse(test.content('package.json'));
       expect(newPackageJson.haste.preset).to.eql('yoshi');
     });
@@ -1300,7 +1300,7 @@ describe('Aggregator: Build', () => {
       test.setup({
         'package.json': fx.packageJson(),
       }).execute('build', [], Object.assign({MIGRATE_TO_HASTE: 'false'}, outsideTeamCity));
-      
+
       const newPackageJson = JSON.parse(test.content('package.json'));
       expect(newPackageJson.haste).to.be.undefined;
     });
