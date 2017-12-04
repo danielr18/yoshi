@@ -117,7 +117,7 @@ describe('measure bundle size', () => {
     });
   });
 
-  it('should report the size of all min js and css files', () => {
+  it.skip('should report the size of all min js and css files', () => {
     test.setup({
       'dist/statics/a.bundle.min.css': cssFileContent,
       'dist/statics/a.bundle.min.js': someFileContent,
@@ -134,7 +134,7 @@ describe('measure bundle size', () => {
     });
   });
 
-  it('should not report a non minified bundle', () => {
+  it.skip('should not report a non minified bundle', () => {
     test.setup({
       'dist/statics/b.bundle.min.js': someFileContent,
       'dist/statics/b.bundle.js': someFileContent,
@@ -179,7 +179,7 @@ describe('measure bundle size', () => {
     });
   });
 
-  it('should support json arrays', () => {
+  it.skip('should support json arrays', () => {
     test.setup({
       'dist/statics/a.bundle.min.css': cssFileContent,
       'dist/statics/a.bundle.min.js': someFileContent,
@@ -194,7 +194,7 @@ describe('measure bundle size', () => {
     });
   });
 
-  it('should support report each file once for each app in the array', () => {
+  it.skip('should support report each file once for each app in the array', () => {
     const ANOTHER_APP_NAME = 'another-unique-app-name'; // eslint-disable-line camelcase
     test.setup({
       'dist/statics/a.bundle.min.css': cssFileContent,
