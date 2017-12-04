@@ -489,9 +489,9 @@ describe('Aggregator: Start', () => {
 
     describe('Migrate to Haste', () => {
       it('should migrate to haste', () => {
-        test.setup({
+        child = test.setup({
           'package.json': fx.packageJson(),
-        }).spawn('start', []);
+        }).spawn('start', [], outsideTeamCity);
 
         return retryPromise({backoff: 100}, () => {
           try {
@@ -505,9 +505,9 @@ describe('Aggregator: Start', () => {
       });
 
       it('should not migrate to haste if the MIGRATE_TO_HASTE environment variable is false', () => {
-        test.setup({
+        child = test.setup({
           'package.json': fx.packageJson(),
-        }).spawn('start', [], {MIGRATE_TO_HASTE: 'false'});
+        }).spawn('start', [], Object.assign({MIGRATE_TO_HASTE: 'false'}, outsideTeamCity));
 
         return retryPromise({backoff: 100}, () => {
           try {

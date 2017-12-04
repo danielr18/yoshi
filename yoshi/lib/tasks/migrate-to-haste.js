@@ -1,7 +1,12 @@
 const yoshiToHaste = require('yoshi-to-haste');
 const chalk = require('chalk');
+const {inTeamCity} = require('../utils');
 
 module.exports = () => () => {
+  if (inTeamCity()) {
+    return;
+  }
+
   if (process.env.MIGRATE_TO_HASTE === 'false') {
     return;
   }
