@@ -21,7 +21,7 @@
     "react-addons-test-utils": "~15.6.0",
     "require-reload": "~0.2.2",
     "velocity": "~0.7.2",
-    "yoshi": "~1.1.0"
+    "yoshi": "1.1.328"
   },
   "dependencies": {
     "babel-polyfill": "~6.23.0",

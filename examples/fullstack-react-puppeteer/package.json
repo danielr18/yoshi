@@ -30,7 +30,7 @@
     "react-addons-test-utils": "^15.3.2",
     "react-test-renderer": "^15.5.4",
     "sleep": "^5.1.1",
-    "yoshi": "latest"
+    "yoshi": "1.1.328"
   },
   "dependencies": {
     "axios": "^0.16.1",
