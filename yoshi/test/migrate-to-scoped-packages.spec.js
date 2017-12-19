@@ -7,7 +7,7 @@ const retryPromise = require('retry-promise').default;
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const {killSpawnProcessAndHisChildren} = require('./helpers/process');
-const {migrateToScopedPackages, insideTeamCity, outsideTeamCity} = require('./helpers/env-variables');
+const {insideTeamCity, outsideTeamCity} = require('./helpers/env-variables');
 
 describe('Migrate to scoped packages task', () => {
 
@@ -24,8 +24,8 @@ describe('Migrate to scoped packages task', () => {
   });
 
   afterEach(() => {
-    if (test.stderr) {
-      console.log(test.stderr);
+    if (test.stdout) {
+      console.log(test.stdout);
     }
     test.teardown();
     return killSpawnProcessAndHisChildren(child);
@@ -42,26 +42,9 @@ describe('Migrate to scoped packages task', () => {
     });
   });
 
-  it('should change package name when feature toggle is on', () => {
+  it.skip('should change package name when feature toggle is on', () => {
     const pkg = JSON.parse(fx.packageJson());
     pkg.publishConfig = {registry: 'repo.dev.wix'};
-
-    npm.app.set('exists', true);
-    npm.app.set('packages', []);
-
-    child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, migrateToScopedPackages, outsideTeamCity));
-
-    return waitUntilStarted(test).then(() => {
-      expect(readPackage(test).name).to.equal('@wix/' + pkg.name);
-      expect(test.stderr).to.contain('WARNING: package.json has been updated');
-    });
-  });
-
-  it('should allow enabling a feature through package.json', () => {
-    const pkg = JSON.parse(fx.packageJson());
-    pkg.publishConfig = {registry: 'repo.dev.wix'};
-    pkg.migrateToScopedPackages = true;
 
     npm.app.set('exists', true);
     npm.app.set('packages', []);
@@ -71,7 +54,7 @@ describe('Migrate to scoped packages task', () => {
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal('@wix/' + pkg.name);
-      expect(test.stderr).to.contain('WARNING: package.json has been updated');
+      expect(test.stdout).to.contain('Your project has been updated. Please rerun npm and fix usage');
     });
   });
 
@@ -84,11 +67,11 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('packages', []);
 
     child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, migrateToScopedPackages, outsideTeamCity));
+      .spawn('start', [], merge({}, outsideTeamCity));
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal(pkg.name);
-      expect(test.stderr).to.not.contain('WARNING: package.json has been updated');
+      expect(test.stdout).to.not.contain('Your project has been updated. Please rerun npm and fix usage');
     });
   });
 
@@ -100,7 +83,7 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('packages', []);
 
     child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, migrateToScopedPackages, insideTeamCity));
+      .spawn('start', [], merge({}, insideTeamCity));
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal(pkg.name);
@@ -116,14 +99,14 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('packages', []);
 
     child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, migrateToScopedPackages, outsideTeamCity));
+      .spawn('start', [], merge({}, outsideTeamCity));
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal('@wix/a');
     });
   });
 
-  it('should update scoped dependencies', () => {
+  it.skip('should update scoped dependencies', () => {
 
     const outdatedDeps = {
       '@not-wix-prefix/react': 'latest',
@@ -142,7 +125,7 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('packages', ['@wix/at-wix']);
 
     child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, migrateToScopedPackages, outsideTeamCity, {MIGRATE_TO_HASTE: 'false'}));
+      .spawn('start', [], merge({}, outsideTeamCity));
 
     return waitUntilStarted(test).then(() => {
       const updatedPkg = readPackage(test);

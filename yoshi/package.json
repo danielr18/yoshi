@@ -127,6 +127,9 @@
     "typescript": "~2.3.0",
     "wnpm-ci": "latest"
   },
+  "optionalDependencies": {
+    "update-scopes": "^1.0.3"
+  },
   "eslintConfig": {
     "extends": "wix",
     "rules": {
