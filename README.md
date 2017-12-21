@@ -310,6 +310,10 @@ If set, export the bundle as library. `yoshi.exports` is the name.
 
 Use this if you are writing a library and want to publish it as single file. Library will be exported with `UMD` format.
 
+##### yoshi.hmr
+
+Set to false in order to disable hot module replacement. (defaults to true)
+
 ## FAQ
 - [How do I debug my application/tests?](docs/faq/DEBUGGING.md)
 - [How to add external assets to my client part of the project?](docs/faq/ASSETS.md)
