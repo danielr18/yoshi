@@ -6,7 +6,7 @@ const retryPromise = require('retry-promise').default;
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
 const {killSpawnProcessAndHisChildren} = require('./helpers/process');
-const {insideTeamCity, outsideTeamCity} = require('./helpers/env-variables');
+const {insideTeamCity, outsideCI} = require('./helpers/env-variables');
 
 describe('Migrate to scoped packages task', () => {
 
@@ -34,7 +34,7 @@ describe('Migrate to scoped packages task', () => {
     const pkg = JSON.parse(fx.packageJson());
     pkg.migrateToScopedPackages = true;
 
-    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideCI);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal(pkg.name);
@@ -49,7 +49,7 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('exists', true);
     npm.app.set('packages', []);
 
-    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideCI);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal('@wix/' + pkg.name);
@@ -65,7 +65,7 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('exists', true);
     npm.app.set('packages', []);
 
-    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideCI);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal(pkg.name);
@@ -98,7 +98,7 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('exists', true);
     npm.app.set('packages', []);
 
-    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideCI);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal('@wix/a');
@@ -124,7 +124,7 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('exists', true);
     npm.app.set('packages', ['@wix/at-wix']);
 
-    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideCI);
 
     return waitUntilStarted(test).then(() => {
       const updatedPkg = readPackage(test);
