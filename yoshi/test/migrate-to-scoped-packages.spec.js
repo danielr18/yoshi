@@ -1,6 +1,5 @@
 'use strict';
 
-const {merge} = require('lodash');
 const {expect} = require('chai');
 const retryPromise = require('retry-promise').default;
 
@@ -31,82 +30,82 @@ describe('Migrate to scoped packages task', () => {
     return killSpawnProcessAndHisChildren(child);
   });
 
-  it('should not change package name by default', () => {
+  it('should not change package name if scopes package is not available', () => {
     const pkg = JSON.parse(fx.packageJson());
+    pkg.migrateToScopedPackages = true;
 
-    child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, outsideTeamCity));
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal(pkg.name);
     });
   });
 
-  it.skip('should change package name when feature toggle is on', () => {
+  it('should change package name', () => {
     const pkg = JSON.parse(fx.packageJson());
+    pkg.migrateToScopedPackages = true;
     pkg.publishConfig = {registry: 'repo.dev.wix'};
 
     npm.app.set('exists', true);
     npm.app.set('packages', []);
 
-    child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, outsideTeamCity));
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal('@wix/' + pkg.name);
-      expect(test.stdout).to.contain('Your project has been updated. Please rerun npm and fix usage');
+      expect(test.stdout).to.contain('Your package.json has been updated. Please rerun npm and fix usage.');
     });
   });
 
   it('should allow disabling a feature through package.json', () => {
     const pkg = JSON.parse(fx.packageJson());
-    pkg.publishConfig = {registry: 'repo.dev.wix'};
     pkg.migrateToScopedPackages = false;
+    pkg.publishConfig = {registry: 'repo.dev.wix'};
 
     npm.app.set('exists', true);
     npm.app.set('packages', []);
 
-    child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, outsideTeamCity));
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal(pkg.name);
-      expect(test.stdout).to.not.contain('Your project has been updated. Please rerun npm and fix usage');
+      expect(test.stdout).to.contain('Your package.json is up to date. No changes done.');
     });
   });
 
   it('should not change package name when run inside teamcity', () => {
     const pkg = JSON.parse(fx.packageJson());
+    pkg.migrateToScopedPackages = true;
     pkg.publishConfig = {registry: 'repo.dev.wix'};
 
     npm.app.set('exists', true);
     npm.app.set('packages', []);
 
-    child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, insideTeamCity));
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], insideTeamCity);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal(pkg.name);
+      expect(test.stdout).to.contain('Running inside CI: Migration of scoped dependencies skipped.');
     });
   });
 
   it('should not change package name if its already scoped', () => {
     const pkg = JSON.parse(fx.packageJson());
+    pkg.migrateToScopedPackages = true;
     pkg.name = '@wix/a';
     pkg.publishConfig = {registry: 'repo.dev.wix'};
 
     npm.app.set('exists', true);
     npm.app.set('packages', []);
 
-    child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, outsideTeamCity));
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
 
     return waitUntilStarted(test).then(() => {
       expect(readPackage(test).name).to.equal('@wix/a');
     });
   });
 
-  it.skip('should update scoped dependencies', () => {
+  it('should update scoped dependencies', () => {
 
     const outdatedDeps = {
       '@not-wix-prefix/react': 'latest',
@@ -116,6 +115,7 @@ describe('Migrate to scoped packages task', () => {
     };
 
     const pkg = JSON.parse(fx.packageJson());
+    pkg.migrateToScopedPackages = true;
     pkg.publishConfig = {registry: 'repo.dev.wix'};
     pkg.dependencies = outdatedDeps;
     pkg.devDependencies = outdatedDeps;
@@ -124,8 +124,7 @@ describe('Migrate to scoped packages task', () => {
     npm.app.set('exists', true);
     npm.app.set('packages', ['@wix/at-wix']);
 
-    child = setup(test, JSON.stringify(pkg))
-      .spawn('start', [], merge({}, outsideTeamCity));
+    child = setup(test, JSON.stringify(pkg)).spawn('start', [], outsideTeamCity);
 
     return waitUntilStarted(test).then(() => {
       const updatedPkg = readPackage(test);
@@ -137,7 +136,7 @@ describe('Migrate to scoped packages task', () => {
       };
       expect(updatedPkg.name).to.equal('@wix/' + pkg.name);
       expect(updatedPkg.dependencies).to.deep.equal(updatedDeps);
-      expect(updatedPkg.devDependencies).to.deep.equal(updatedDeps);
+      expect(updatedPkg.devDependencies).to.deep.equal({...updatedDeps, 'haste-preset-yoshi': 'latest'});
       expect(updatedPkg.peerDependencies).to.deep.equal(updatedDeps);
     });
   });

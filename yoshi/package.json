@@ -108,7 +108,8 @@
     "yoshi-typescript": "latest",
     "yoshi-update-node-version": "latest",
     "yoshi-utils": "~1.0.0",
-    "yoshi-wnpm-release": "latest"
+    "yoshi-wnpm-release": "latest",
+    "update-scopes": "^1.1.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
@@ -126,9 +127,6 @@
     "mocha-env-reporter": "~2.0.4",
     "typescript": "~2.3.0",
     "wnpm-ci": "latest"
-  },
-  "optionalDependencies": {
-    "update-scopes": "^1.0.3"
   },
   "eslintConfig": {
     "extends": "wix",
