@@ -19,6 +19,9 @@ export const beforeAndAfter = (port = 3100) => {
 
     after(() => {
       cdnServer.kill();
+      return new Promise(resolve => {
+        setTimeout(() => resolve(), 1000);
+      });
     });
   }
 };
