@@ -323,3 +323,4 @@ Set to false in order to disable hot module replacement. (defaults to true)
 - [How do I separately bundle common logic for multiple entries?](docs/faq/COMMONS-CHUNK.md)
 - [How to use SVG](docs/faq/SVG.md)
 - [Moment.js locales are missing](docs/faq/MOMENT_OPTIMIZATION.md)
+
