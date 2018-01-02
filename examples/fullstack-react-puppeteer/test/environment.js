@@ -18,7 +18,21 @@ export const beforeAndAfter = (port = 3100) => {
     });
 
     after(() => {
-      cdnServer.kill();
+      return killProcess(cdnServer);
     });
   }
 };
+
+function killProcess(process) {
+  process.kill();
+  return new Promise(resolve => {
+    function schedule() {
+      if (process.killed) {
+        resolve();
+      } else {
+        setTimeout(schedule, 1000);
+      }
+    }
+    schedule();
+  });
+}
