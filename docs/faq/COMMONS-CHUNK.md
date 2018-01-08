@@ -2,9 +2,11 @@
 
 If you are using multiple entries you might consider using the [commonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/), it will create a seperate file (chunk) consisting of common modules shared between multiple entry points. This results in pagespeed optimizations as the browser can quickly serve the shared code from cache, rather than being forced to load a larger bundle whenever a new page is visited.
 
-If you want to add it, go to your `package.json` and add the `commonChunks` options, the value can be a boolean or an object.
+If you want to add it, go to your `package.json` and add the `commonChunks` options, the value can be a boolean or a configuration object.
 
+Insert `true` for the default configuration and an object for custom configuraion, it is the same object you would normaly insert to the plugin -> `new webpack.optimize.CommonsChunkPlugin(<this object>)`
 
+### usage example of the default configuration
 ```json
 "yoshi": {
   "entry": {
@@ -15,15 +17,27 @@ If you want to add it, go to your `package.json` and add the `commonChunks` opti
 }
 ```
 
-Insert `true` for the default configuration and an object for custom configuraion, it is the same object you would normaly insert to the plugin -> `new webpack.optimize.CommonsChunkPlugin(<this object>)`
-
+The default configuration
 ```json
-// the default configuration
-
 {
   "name": "commons",
   "minChunks": 2
 };
+```
+
+### usage example of a custom configuration
+
+```json
+"yoshi": {
+  "entry": {
+    "a": "./a",
+    "b": "./b",
+  },
+  "commonsChunk": {
+    "name": "commons",
+    "minChunks": 4,
+  }
+}
 ```
 
 Once the plugin is active it will generate the following files if needed:
