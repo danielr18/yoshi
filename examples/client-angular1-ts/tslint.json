@@ -1,8 +1,0 @@
-{
-  "extends": [
-    "tslint-config-wix"
-  ],
-  "rules": {
-    "no-invalid-this": false
-  }
-}
