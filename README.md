@@ -81,7 +81,8 @@ The following sections describe the available tasks in `yoshi`. You can always u
 Flag | Short Flag | Description | Default Value
 ---- | ---------- | ----------- | --------------
 --entry-point | -e | Entry point for the app. | `./dist/index.js`
---manual-restart | | get SIGHUP on change and manage application reboot manually | false
+--manual-restart | | Get SIGHUP on change and manage application reboot manually | false
+--no-test | | Do not spawn `npm test` after start | false
 
 This will run the specified (server) `entryPoint` file and mount a CDN server.
 
