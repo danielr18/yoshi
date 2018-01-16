@@ -1,10 +1,8 @@
 'use strict';
 
-const path = require('path');
 const expect = require('chai').expect;
 const tp = require('./helpers/test-phases');
 const fx = require('./helpers/fixtures');
-const {exists} = require('../lib/utils');
 const {outsideTeamCity, insideTeamCity} = require('./helpers/env-variables');
 const {getMockedCI} = require('yoshi-utils').utilsTestkit;
 
